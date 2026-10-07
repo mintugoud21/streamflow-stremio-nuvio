@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  streamflow:
+    build: .
+    container_name: streamflow-addon
+    restart: unless-stopped
+    ports:
+      - "7000:7000"
+    environment:
+      - PORT=7000
+      - HOST=0.0.0.0
+      - NODE_ENV=production

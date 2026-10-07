@@ -1,0 +1,26 @@
+{
+  "name": "addon-and-plugins-for-stremio-nuvio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "node test/test-scrapers.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.20.0",
+    "cheerio": "^1.2.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.6",
+    "express": "^5.2.1",
+    "lru-cache": "^11.5.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

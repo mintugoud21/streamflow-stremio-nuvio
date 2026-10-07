@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamFlow - Stremio & Nuvio Addon Hub</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="brand-wrapper">
+        <img src="/assets/logo.svg" alt="StreamFlow Logo" class="logo-img">
+        <h1 class="brand-title">StreamFlow</h1>
+      </div>
+      <p class="hero-subtitle">
+        Universal multi-source internet scraper addon & plugin for <strong>Stremio</strong> and <strong>Nuvio</strong>.
+        Stream high-resolution movies and TV episodes with zero configuration required.
+      </p>
+
+      <div class="status-badge-container">
+        <div class="badge" id="serverStatusBadge">
+          <span class="status-dot"></span> Checking Status...
+        </div>
+        <div class="badge" id="uptimeBadge">⏱️ Uptime: 0m</div>
+        <div class="badge" id="cacheBadge">💾 Cache: Active</div>
+        <div class="badge">📡 Protocols: Stremio v3 • Nuvio v1</div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+
+      <!-- Column 1: Configurator -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">⚙️ Addon Configurator</h2>
+          <span class="badge" style="font-size: 0.75rem;">Real-time</span>
+        </div>
+
+        <!-- Providers -->
+        <div class="config-group">
+          <label class="config-label">Scraping Providers</label>
+          <div class="toggle-grid">
+            <label class="checkbox-tile">
+              <input type="checkbox" name="provider" value="apibay" checked>
+              <div class="tile-info">
+                <span class="tile-title">TPB / Apibay</span>
+                <span class="tile-desc">High-seed torrent scraper</span>
+              </div>
+            </label>
+
+            <label class="checkbox-tile">
+              <input type="checkbox" name="provider" value="torrentio" checked>
+              <div class="tile-info">
+                <span class="tile-title">Torrentio Open</span>
+                <span class="tile-desc">Multi-tracker P2P network</span>
+              </div>
+            </label>
+
+            <label class="checkbox-tile">
+              <input type="checkbox" name="provider" value="embeds" checked>
+              <div class="tile-info">
+                <span class="tile-title">Web Embeds</span>
+                <span class="tile-desc">AutoEmbed, 2Embed, VidLink</span>
+              </div>
+            </label>
+
+            <label class="checkbox-tile">
+              <input type="checkbox" name="provider" value="archive" checked>
+              <div class="tile-info">
+                <span class="tile-title">Internet Archive</span>
+                <span class="tile-desc">Public domain MP4 streams</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Quality Filters -->
+        <div class="config-group">
+          <label class="config-label">Allowed Resolutions</label>
+          <div class="toggle-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <label class="checkbox-tile" style="padding: 0.5rem; justify-content: center;">
+              <input type="checkbox" name="quality" value="4K" checked>
+              <span class="tile-title" style="font-size: 0.85rem;">4K</span>
+            </label>
+            <label class="checkbox-tile" style="padding: 0.5rem; justify-content: center;">
+              <input type="checkbox" name="quality" value="1080p" checked>
+              <span class="tile-title" style="font-size: 0.85rem;">1080p</span>
+            </label>
+            <label class="checkbox-tile" style="padding: 0.5rem; justify-content: center;">
+              <input type="checkbox" name="quality" value="720p" checked>
+              <span class="tile-title" style="font-size: 0.85rem;">720p</span>
+            </label>
+            <label class="checkbox-tile" style="padding: 0.5rem; justify-content: center;">
+              <input type="checkbox" name="quality" value="480p" checked>
+              <span class="tile-title" style="font-size: 0.85rem;">480p</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Stream Format Toggles -->
+        <div class="config-group">
+          <label class="config-label">Stream Types</label>
+          <div class="toggle-grid">
+            <label class="checkbox-tile">
+              <input type="checkbox" id="includeTorrentsToggle" checked>
+              <div class="tile-info">
+                <span class="tile-title">Torrent Streams</span>
+                <span class="tile-desc">Direct P2P video stream</span>
+              </div>
+            </label>
+            <label class="checkbox-tile">
+              <input type="checkbox" id="includeDirectStreamsToggle" checked>
+              <div class="tile-info">
+                <span class="tile-title">Cloud Web Streams</span>
+                <span class="tile-desc">Direct HTTP / HLS playback</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Max Streams -->
+        <div class="config-group">
+          <label class="config-label">Max Results per Media: <span id="maxResultsVal" class="range-value">20</span></label>
+          <div class="range-slider-wrapper">
+            <input type="range" id="maxResultsInput" min="5" max="50" step="5" value="20">
+          </div>
+        </div>
+      </section>
+
+      <!-- Column 2: Install & Export -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">🚀 Install & Export</h2>
+          <span class="badge" style="font-size: 0.75rem;">Stremio & Nuvio</span>
+        </div>
+
+        <!-- Stremio Section -->
+        <div class="install-action-card">
+          <div class="action-header">
+            <div class="action-icon">🎬</div>
+            <div>
+              <div class="action-name">Stremio Application</div>
+              <div class="action-desc" style="margin-bottom: 0;">Desktop, Android, Android TV & Web</div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <a id="stremioInstallBtn" href="stremio:///manifest.json" class="btn btn-primary">
+              ⚡ Install to Stremio
+            </a>
+          </div>
+          <div class="url-box">
+            <input type="text" id="stremioUrlInput" class="url-input" readonly value="">
+            <button id="copyStremioBtn" class="btn-copy">Copy URL</button>
+          </div>
+        </div>
+
+        <!-- Nuvio Section -->
+        <div class="install-action-card">
+          <div class="action-header">
+            <div class="action-icon">🧩</div>
+            <div>
+              <div class="action-name">Nuvio Plugin & Web App</div>
+              <div class="action-desc" style="margin-bottom: 0;">JSON plugin schema & URL import</div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <a id="downloadNuvioBtn" href="/api/nuvio/export" class="btn btn-primary" download>
+              ⬇️ Download .JSON Plugin
+            </a>
+          </div>
+          <div class="url-box">
+            <input type="text" id="nuvioUrlInput" class="url-input" readonly value="">
+            <button id="copyNuvioBtn" class="btn-copy">Copy JSON URL</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Live Stream Tester & Player -->
+    <section class="card tester-container">
+      <div class="card-header">
+        <h2 class="card-title">🧪 Live Scraper Sandbox & Stream Tester</h2>
+        <span class="badge">Direct Playback Check</span>
+      </div>
+
+      <p style="color: var(--text-secondary); margin-bottom: 1.2rem; font-size: 0.9rem;">
+        Test internet scraping in real-time. Pick a sample movie/show or enter any IMDb ID to verify playable streams.
+      </p>
+
+      <!-- Quick Chips -->
+      <div class="quick-chips">
+        <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center;">Quick Test:</span>
+        <button class="chip" data-type="movie" data-id="tt0111161">Shawshank Redemption (Movie)</button>
+        <button class="chip" data-type="movie" data-id="tt0816692">Interstellar (Movie)</button>
+        <button class="chip" data-type="series" data-id="tt0903747" data-season="1" data-episode="1">Breaking Bad S01E01 (Series)</button>
+        <button class="chip" data-type="series" data-id="tt4574334" data-season="1" data-episode="1">Stranger Things S01E01 (Series)</button>
+      </div>
+
+      <!-- Controls -->
+      <div class="tester-controls">
+        <input type="text" id="mediaIdInput" class="input-field" placeholder="IMDb ID (e.g. tt0111161)" value="tt0111161">
+        <select id="mediaTypeSelect" class="input-field">
+          <option value="movie">Movie</option>
+          <option value="series">TV Series</option>
+        </select>
+        <div id="seriesInputsWrapper" style="display: none; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+          <input type="number" id="seasonInput" class="input-field" placeholder="Season" value="1" min="1">
+          <input type="number" id="episodeInput" class="input-field" placeholder="Episode" value="1" min="1">
+        </div>
+        <button id="testStreamBtn" class="btn btn-primary" style="white-space: nowrap;">
+          🔍 Fetch Streams
+        </button>
+      </div>
+
+      <div id="testerStatus" style="display: none; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-secondary);"></div>
+
+      <!-- Results list -->
+      <div class="stream-list" id="streamResultsList">
+        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+          Click <strong>Fetch Streams</strong> or select a quick test above to preview live scraped links.
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation Guides & Documentation -->
+    <section class="card" style="margin-top: 2rem;">
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-target="guide-stremio">Stremio Installation</button>
+        <button class="tab-btn" data-target="guide-nuvio">Nuvio Setup</button>
+        <button class="tab-btn" data-target="api-docs">API & Developers</button>
+      </div>
+
+      <div id="guide-stremio" class="tab-pane active">
+        <div class="guide-step">
+          <h4>1. Stremio Desktop & Mobile App</h4>
+          <p>Click the <strong>"Install to Stremio"</strong> button above. Your browser will prompt you to open Stremio, where you simply click <strong>"Install"</strong>.</p>
+        </div>
+        <div class="guide-step">
+          <h4>2. Stremio Web or Android TV</h4>
+          <p>Copy the Stremio Manifest URL using the <strong>Copy URL</strong> button above. Open Stremio, go to <strong>Addons (puzzle icon)</strong> &gt; search bar / Addon URL box &gt; paste the URL and confirm.</p>
+        </div>
+      </div>
+
+      <div id="guide-nuvio" class="tab-pane">
+        <div class="guide-step">
+          <h4>1. URL Import in Nuvio</h4>
+          <p>Copy the Nuvio Plugin URL using <strong>Copy JSON URL</strong> above. In Nuvio, navigate to <strong>Settings / Plugins</strong> &gt; <strong>Add by URL</strong> &gt; paste the link.</p>
+        </div>
+        <div class="guide-step">
+          <h4>2. Offline .JSON Plugin File</h4>
+          <p>Click <strong>"Download .JSON Plugin"</strong> above to save <code>nuvio-streamflow-plugin.json</code>. In Nuvio, choose <strong>Import Plugin from File</strong> and upload the saved file.</p>
+        </div>
+      </div>
+
+      <div id="api-docs" class="tab-pane">
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+          Standard Stremio Addon Protocol v3 and Nuvio Plugin endpoints:
+        </p>
+        <pre><code>GET /manifest.json                     # Stremio Addon Manifest
+GET /:config/manifest.json             # Custom user configured manifest
+GET /stream/:type/:id.json             # Stremio streams for movie / series (e.g. tt0111161)
+GET /:config/stream/:type/:id.json     # Filtered streams based on user configuration
+GET /nuvio-plugin.json                 # Nuvio Plugin Manifest (schema v1)
+GET /api/nuvio/export                  # Downloadable plugin .json file
+GET /api/health                        # Server health, uptime, and scraper stats
+GET /api/test-stream?type=...&amp;id=...   # Real-time stream resolution API</code></pre>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      StreamFlow Addon &amp; Plugin for Stremio &amp; Nuvio • Open-Source Internet Scraper Engine
+    </footer>
+  </div>
+
+  <!-- Video Player Preview Modal -->
+  <div class="modal-overlay" id="playerModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalPlayerTitle" style="font-size: 1.1rem; font-weight: 600;">Stream Preview</h3>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="video-container">
+        <iframe id="playerFrame" allowfullscreen allow="autoplay; fullscreen"></iframe>
+        <video id="playerVideo" controls playsinline style="display: none;"></video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
