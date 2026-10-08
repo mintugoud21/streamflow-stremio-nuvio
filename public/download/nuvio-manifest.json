@@ -1,0 +1,30 @@
+{
+  "name": "StreamFlow Repository",
+  "version": "1.0.0",
+  "description": "Multi-source online stream scrapers for Nuvio",
+  "author": "StreamFlow",
+  "scrapers": [
+    {
+      "id": "streamflow",
+      "name": "StreamFlow",
+      "description": "Multi-source scraper with AutoEmbed, VidLink, 2Embed, SmashyStream and Torrents",
+      "version": "1.0.0",
+      "author": "StreamFlow Team",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/streamflow.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4",
+        "mkv"
+      ],
+      "logo": "https://raw.githubusercontent.com/tapframe/nuvio-providers/main/assets/icon.png",
+      "contentLanguage": [
+        "en"
+      ]
+    }
+  ]
+}

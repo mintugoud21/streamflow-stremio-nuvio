@@ -116,11 +116,19 @@ docker compose up -d
 3. Or copy the manifest URL (`http://<host>:7000/manifest.json`) and paste it into Stremio's Addon search bar.
 
 ### Option B: Install in Nuvio
-1. **Via URL**:
-   - Copy the Nuvio plugin URL (`http://<host>:7000/nuvio-plugin.json`) and add it under Nuvio Settings > Plugins > Add URL.
-2. **Via `.json` File**:
-   - In the web interface, click **"⬇️ Download .JSON Plugin"**.
-   - In Nuvio, select **Import Plugin from File** and upload the downloaded file.
+1. **Direct GitHub Repository (Recommended - No server required!)**:
+   - In Nuvio, go to **Settings > Plugins > Add Plugin URL**.
+   - Paste the raw manifest URL:
+     ```text
+     https://raw.githubusercontent.com/mintugoud21/streamflow-stremio-nuvio/main/nuvio-manifest.json
+     ```
+   - Nuvio will install the Hermes-compatible provider and run scrapers directly inside the app on your device!
+
+2. **Via Local Provider File**:
+   - Copy or download [`providers/streamflow.js`](file:///workspace/addon-and-plugins-for-stremio-nuvio/providers/streamflow.js) directly into Nuvio.
+
+3. **Via Stremio Addon Compatibility**:
+   - Add the manifest URL in Nuvio Addons: `https://<your-host>/manifest.json`
 
 ---
 
