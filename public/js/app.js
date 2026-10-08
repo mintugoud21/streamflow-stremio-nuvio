@@ -105,6 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Update URLs dynamically
   async function updateGeneratedUrls() {
     const config = getCurrentConfig();
+    const origin = window.location.origin;
+
+    // Set immediate defaults using current window origin
+    const defaultManifest = `${origin}/manifest.json`;
+    stremioInstallBtn.href = defaultManifest.replace(/^https?:\/\//, 'stremio://');
+    stremioUrlInput.value = defaultManifest;
+    nuvioUrlInput.value = `${origin}/nuvio-plugin.json`;
+    downloadNuvioBtn.href = `${origin}/api/nuvio/export`;
+
     try {
       const res = await fetch('/api/config/generate', {
         method: 'POST',
@@ -113,10 +122,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const data = await res.json();
 
-      stremioInstallBtn.href = data.stremioUrl;
-      stremioUrlInput.value = data.manifestUrl;
-      nuvioUrlInput.value = data.nuvioPluginUrl;
-      downloadNuvioBtn.href = data.nuvioDownloadUrl;
+      const manifestUrl = data.manifestUrl ? data.manifestUrl.replace(/^https?:\/\/[^\/]+/, origin) : defaultManifest;
+      const stremioUrl = manifestUrl.replace(/^https?:\/\//, 'stremio://');
+      const nuvioUrl = data.nuvioPluginUrl ? data.nuvioPluginUrl.replace(/^https?:\/\/[^\/]+/, origin) : `${origin}/nuvio-plugin.json`;
+      const downloadUrl = data.nuvioDownloadUrl ? data.nuvioDownloadUrl.replace(/^https?:\/\/[^\/]+/, origin) : `${origin}/api/nuvio/export`;
+
+      stremioInstallBtn.href = stremioUrl;
+      stremioUrlInput.value = manifestUrl;
+      nuvioUrlInput.value = nuvioUrl;
+      downloadNuvioBtn.href = downloadUrl;
     } catch (err) {
       console.error('Error generating URLs:', err);
     }

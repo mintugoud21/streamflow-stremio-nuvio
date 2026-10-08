@@ -11,6 +11,9 @@ const apiRoutes = require('./routes/api');
 function createServer() {
   const app = express();
 
+  // Trust reverse proxy / Cloudflare tunnel for HTTPS detection
+  app.set('trust proxy', true);
+
   // Enable CORS for all routes (crucial for Stremio Web and Nuvio)
   app.use(cors({
     origin: '*',
